@@ -1,0 +1,23 @@
+<?php 
+
+namespace AppBundle\Repository\Traits;
+
+trait CreateEntityTrait
+{
+    /**
+     * @param array $config -
+     * [
+     *      'propertyName'=>'value'
+     * ]
+     */
+    public function create($config)
+    {
+        $em = $this->getEntityManager();
+        foreach ($config as $property => $value) {
+            $methodSet = 'set' . ucfirst($property);
+            $this->$methodSet($value);
+        }
+        $em->persist($this);
+        $em->flush();
+    }
+}
